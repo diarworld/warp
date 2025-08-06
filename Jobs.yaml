@@ -1,0 +1,132 @@
+# WRITE PROD PARAMS : "put", "--host", "storage.yandexcloud.net", "--obj.size", "1M", "--concurrent", "64", "--duration", "1m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-write-prod
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-write
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "put", "--bucket", "t-dp-tests", "--host", "storage.yandexcloud.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "1M", "--concurrent", "64", "--duration", "1m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+# WRITE TEST PARAMS : "put", "--host", "s3-onprem.storage.yandex.net", "--obj.size", "1M", "--concurrent", "64", "--duration", "1m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-write-test
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-write
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "put", "--bucket", "t-dp-tests", "--host", "s3-onprem.storage.yandex.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "1M", "--concurrent", "64", "--duration", "1m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+# READ PROD PARAMS : "get", "--host", "storage.yandexcloud.net", "--obj.size", "4K", "--concurrent", "128", "--duration", "1m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-read-prod
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-read
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "get", "--bucket", "t-dp-tests", "--host", "storage.yandexcloud.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "4K", "--concurrent", "128", "--duration", "1m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+# READ TEST PARAMS : "get", "--host", "s3-onprem.storage.yandex.net", "--obj.size", "4K", "--concurrent", "128", "--duration", "1m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-read-test
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-read
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "get", "--bucket", "t-dp-tests", "--host", "s3-onprem.storage.yandex.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "4K", "--concurrent", "128", "--duration", "1m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+# RPS TEST PARAMS : "get", "--host", "s3-onprem.storage.yandex.net", "--obj.size", "1B", "--concurrent", "1024", "--duration", "10m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-rps-test-10m
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-rps
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "get", "--bucket", "t-dp-tests", "--host", "s3-onprem.storage.yandex.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "1B", "--concurrent", "1024", "--duration", "10m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+# SCALE TEST PARAMS : "put", "--host", "s3-onprem.storage.yandex.net", "--obj.size", "4K", "--obj.randsize", "--concurrent", "128", "--duration", "60m"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warp-scale-test-60m
+  namespace: timesheet
+spec:
+  template:
+    spec:
+      containers:
+      - name: warp-scale
+        image: "minio/warp:latest"
+        env:
+          - name: WARP_ACCESS_KEY
+            value: "xxx"
+          - name: WARP_SECRET_KEY
+            value: "xxx"
+        args: [ "put", "--bucket", "t-dp-tests", "--host", "s3-onprem.storage.yandex.net", "--tls", "--json", "--warp-client", "warp-{0...7}.warp.timesheet.svc.cluster.local:7761", "--obj.size", "4K", "--obj.randsize", "--concurrent", "128", "--duration", "60m" ]
+      restartPolicy: Never
+  backoffLimit: 1
+
+

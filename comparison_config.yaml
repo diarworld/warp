@@ -1,0 +1,94 @@
+# Warp Results Comparison Configuration
+# This file contains configurable thresholds and settings for PROD vs TEST comparisons
+
+# Regression Detection Thresholds
+regression_thresholds:
+  # Throughput degradation threshold (percentage)
+  # If TEST throughput is lower than PROD by this amount, it's considered a regression
+  throughput_degradation_percent: 5.0
+  
+  # Latency increase threshold (percentage)
+  # If TEST latency is higher than PROD by this amount, it's considered a regression
+  latency_increase_percent: 10.0
+  
+  # P99 latency increase threshold (percentage)
+  p99_latency_increase_percent: 15.0
+
+# Significance Level Thresholds
+significance_thresholds:
+  # High significance: throughput difference > 20% or high variability
+  high_significance:
+    throughput_diff_percent: 20.0
+    combined_cv_threshold: 0.3  # Combined coefficient of variation
+  
+  # Medium significance: throughput difference > 10% or moderate variability
+  medium_significance:
+    throughput_diff_percent: 10.0
+    combined_cv_threshold: 0.15  # Combined coefficient of variation
+
+# Report Configuration
+report:
+  # Include detailed statistical analysis in the report
+  include_statistical_analysis: true
+  
+  # Include client distribution analysis
+  include_client_distribution: true
+  
+  # Include per-second throughput analysis
+  include_per_second_analysis: false
+  
+  # Maximum number of individual results to show in tables
+  max_individual_results: 50
+  
+  # Show recommendations in the report
+  show_recommendations: true
+
+# Environment Configuration
+environments:
+  # Environment names and their identifiers
+  prod:
+    name: "PROD"
+    identifiers: ["prod", "production"]
+  
+  test:
+    name: "TEST"
+    identifiers: ["test", "testing", "staging"]
+
+# Operation Mapping
+operations:
+  # Map job types to operation names
+  write: "PUT"
+  read: "GET"
+  mixed: "MIXED"
+  delete: "DELETE"
+  stat: "STAT"
+
+# Output Configuration
+output:
+  # Default output file name
+  default_report_name: "warp_comparison_report.md"
+  
+  # Include timestamp in report filename
+  include_timestamp: false
+  
+  # Report format (markdown, html, json)
+  format: "markdown"
+  
+  # Include charts/graphs (if supported)
+  include_charts: false
+
+# Alert Configuration
+alerts:
+  # Send alerts for regressions
+  enable_alerts: false
+  
+  # Alert thresholds (more strict than regression thresholds)
+  alert_thresholds:
+    throughput_degradation_percent: 10.0
+    latency_increase_percent: 20.0
+  
+  # Alert channels
+  channels:
+    email: false
+    slack: false
+    webhook: false 
